@@ -14,4 +14,10 @@ The local verification environment is Linux, with a clean environment, private n
 
 For independent reproduction, run the package's unit suite and demo in an approved isolated environment as described in README. Offline packaging verification must also build the sdist, build a wheel from that sdist, install without dependencies or network, and run both installed demo entry points. Check that the typing marker and documented files are present.
 
-The recorded tests are synthetic. They do not prove host-wide cgroup enforcement, arbitrary-runner safety, cross-tenant authorization, adoption, certifications, or acceptance into a vendor program. Before/after production-service samples matched; continuous availability was not measured. No remote CI run has been performed for this candidate.
+The recorded tests are synthetic. They do not prove host-wide cgroup enforcement, arbitrary-runner safety, cross-tenant authorization, adoption, certifications, or acceptance into a vendor program. Before/after production-service samples matched; continuous availability was not measured. The local prepublication run above did not include remote CI. Subsequent public CI is recorded below.
+
+## Verified public CI
+
+[Run 38113465597](https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597) tested public commit `3f41a1f815c69d44305a03279d6026f1b505aca6` on Ubuntu 22.04 / Python 3.10.12 and Ubuntu 24.04 / Python 3.12.3. Both jobs passed all 99 package tests with zero skips and completed offline sdist-to-wheel construction, installation, typing-marker checks and both installed demos. Admission verified five aggregate cgroup controls, private namespaces, zero capabilities, a clean environment and network restrictions before package imports. Unit and staging cleanup passed.
+
+The trusted CI provisioning step prepares pinned build dependencies and, when required, a targeted Bubblewrap user-namespace profile on the disposable VM. Package code and build backends run offline inside the admitted worker. This demonstrates the fixed profile on those two environments; it does not certify a production host or an arbitrary runner. The earlier local record remains unchanged in scope.

@@ -129,5 +129,64 @@
     "Library configuration and inspection do not enforce confinement",
     "The laboratory supervisor is outside the distributed library",
     "No employer deployment, accepted disclosure or provider admission established"
-  ]
+  ],
+  "record_scope_note": "Historical local prepublication fields remain scoped to their recorded run. public_ci identifies the subsequent successful public workflow and immutable tested commit.",
+  "public_ci": {
+    "status": "PASS",
+    "tested_commit": "3f41a1f815c69d44305a03279d6026f1b505aca6",
+    "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597",
+    "environments": [
+      {
+        "runner": "Ubuntu 22.04",
+        "python": "3.10.12",
+        "unit_tests": 99,
+        "skipped": 0,
+        "offline_packaging": {
+          "console_demo": "PASS",
+          "installed_py_typed": true,
+          "module_demo": "PASS",
+          "sdist_sha256": "659490df19f2562834a5b8f288b9447de56b5af24b2a5ff3c8a470756f02717a",
+          "sdist_to_wheel": true,
+          "sdist_transfer_integrity": true,
+          "source_copy_integrity": true,
+          "wheel_install_integrity": true,
+          "wheel_sha256": "fa2e24a48ca44f2cbf19cd3aeb31295dd48ac7c9a1cfc22462e53dfe5108b838"
+        },
+        "aggregate_limits": {
+          "cpu.max": "25000 100000",
+          "memory.max": "805306368",
+          "memory.oom.group": "1",
+          "memory.swap.max": "0",
+          "pids.max": "48"
+        },
+        "admission_and_cleanup_verified": true
+      },
+      {
+        "runner": "Ubuntu 24.04",
+        "python": "3.12.3",
+        "unit_tests": 99,
+        "skipped": 0,
+        "offline_packaging": {
+          "console_demo": "PASS",
+          "installed_py_typed": true,
+          "module_demo": "PASS",
+          "sdist_sha256": "a750bb93d6cf84f801ba10720d8acd4ce4c160366cb3fb9a0e5a68924b3ea9a7",
+          "sdist_to_wheel": true,
+          "sdist_transfer_integrity": true,
+          "source_copy_integrity": true,
+          "wheel_install_integrity": true,
+          "wheel_sha256": "fa2e24a48ca44f2cbf19cd3aeb31295dd48ac7c9a1cfc22462e53dfe5108b838"
+        },
+        "aggregate_limits": {
+          "cpu.max": "25000 100000",
+          "memory.max": "805306368",
+          "memory.oom.group": "1",
+          "memory.swap.max": "0",
+          "pids.max": "48"
+        },
+        "admission_and_cleanup_verified": true
+      }
+    ],
+    "scope": "Fixed own-package validation on disposable GitHub-hosted VMs; not production certification or arbitrary-runner safety."
+  }
 }

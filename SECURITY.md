@@ -50,10 +50,9 @@ Incorrect status reporting or data corruption can matter even without a proven
 cross-user security impact; label correctness and robustness issues accurately.
 
 Do not publish sensitive reproductions, keys or private data in public issues.
-When the actual public repository enables private vulnerability reporting, use
-`Security → Advisories → Report a vulnerability`. Until that channel is
-confirmed, coordinate through an existing trusted private channel with the
-maintainer. This policy does not announce an enabled GitHub reporting channel.
+GitHub private vulnerability reporting is enabled on
+[the repository security page](https://github.com/oscarcsn/blue-security-engine/security).
+Use **Report a vulnerability** there to send the report privately to the maintainer.
 
 Triage, remediation and disclosure timing depend on the report and maintainer
 availability. No response SLA, CVE assignment or automatic public credit is

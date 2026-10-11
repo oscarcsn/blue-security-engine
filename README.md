@@ -8,8 +8,9 @@ integrity with HMAC authentication. It also generates Bubblewrap arguments and
 inspects visible cgroups v2 resource limits.
 
 The package is maintained by Oscar Cisneros with AI assistance. The current
-development version is `0.1.0`, under the [MIT license](LICENSE). Public release
-and CI results have not been established for this checkout.
+development version is `0.1.0`, under the [MIT license](LICENSE). The source is
+public, with verified Linux CI results linked below. No package-index release
+is claimed.
 
 ## Components
 
@@ -34,8 +35,9 @@ builds require `setuptools>=61.0` and `wheel`; Bubblewrap and an execution
 supervisor are separate operating-system dependencies.
 
 Use a local checkout through `PYTHONPATH=src`. For an installed wheel, the
-equivalent imports and the `bse-demo` command are available. No published
-package index or clone URL is assumed here.
+equivalent imports and the `bse-demo` command are available. Obtain source from
+[this repository](https://github.com/oscarcsn/blue-security-engine); build and
+install a local wheel as described below.
 
 To install a locally built wheel, mount it in an isolated scratch environment
 with a writable disposable Python environment. Adapt the artifact path to the
@@ -110,13 +112,21 @@ The current publication candidate passed 99 package tests and offline
 sdist-to-wheel build, installation and both demo entry points in the isolated
 local verification profile. [VALIDATION.md](VALIDATION.md) and
 [VALIDATION.json](VALIDATION.json) identify the tested code hashes, environment,
-scope and limits. Remote CI has not been run.
+scope and limits.
+
+[GitHub CI](https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597) for commit `3f41a1f815c69d44305a03279d6026f1b505aca6` passed
+99 tests without skips on Ubuntu 22.04 / Python 3.10.12 and Ubuntu 24.04 /
+Python 3.12.3. Each job built an sdist, built a wheel from that sdist, installed
+offline, checked `py.typed`, and passed both installed demo entry points.
+The fixed CI controller admits package execution only after verifying
+Bubblewrap isolation and aggregate cgroup limits, then checks cleanup.
+See [CI configuration and trust scope](.github/ci/README.md).
 
 ## Contributing and security reports
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md) for bounded synthetic checks and
 [SECURITY.md](SECURITY.md) for security properties and reporting.
-GitHub private vulnerability reporting is usable only after it has been
-enabled on the actual published repository.
+GitHub private vulnerability reporting is enabled. Use **Report a vulnerability**
+on the [repository security page](https://github.com/oscarcsn/blue-security-engine/security).
 
 Changes are recorded in [CHANGELOG.md](CHANGELOG.md).
