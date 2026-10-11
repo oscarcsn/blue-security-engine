@@ -22,7 +22,7 @@ import sys
 import time
 
 
-LIMITS = {"memory.max": "805306368", "memory.swap.max": "0", "cpu.max": "25000 100000", "pids.max": "48"}
+LIMITS = {"memory.max": "805306368", "memory.swap.max": "0", "memory.oom.group": "1", "cpu.max": "25000 100000", "pids.max": "48"}
 NAMESPACES = ("user", "mnt", "pid", "net", "ipc", "uts", "cgroup")
 MAX_OUTPUT = 524288
 
@@ -190,7 +190,7 @@ def main():
         (stage / "policy").chmod(0o555)
         properties = [
             "User=" + str(uid), "Group=" + str(gid), "Description=" + description,
-            "MemoryAccounting=yes", "MemoryMax=768M", "MemorySwapMax=0", "MemoryOOMGroup=yes",
+            "MemoryAccounting=yes", "MemoryMax=768M", "MemorySwapMax=0", "OOMPolicy=kill",
             "CPUAccounting=yes", "CPUQuota=25%", "CPUQuotaPeriodSec=100ms",
             "TasksAccounting=yes", "TasksMax=48", "RuntimeMaxSec=240s", "TimeoutStopSec=5s", "KillMode=control-group",
             "NoNewPrivileges=yes", "CapabilityBoundingSet=", "AmbientCapabilities=", "UMask=0077",

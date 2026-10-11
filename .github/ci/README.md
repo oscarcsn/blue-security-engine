@@ -17,6 +17,9 @@ inside Bubblewrap. All namespaces are private, capabilities are zero, the
 environment is cleared, and host homes, SSH configuration and administrative
 sockets are absent. The entire worker process tree shares one cgroup with
 768 MiB memory, zero swap, 25% CPU, 48 tasks and a 240-second runtime limit.
+`OOMPolicy=kill` requests group termination on OOM. The kernel value
+`memory.oom.group=1` must be observed both inside and outside Bubblewrap
+before the gate opens; requesting a systemd setting alone is insufficient.
 Private scratch is a 64 MiB tmpfs with 2,048 inodes. The external controller
 also bounds output and time, checks the own-unit identity before admission,
 and cleans only that unit and its unique staging directory.

@@ -43,7 +43,7 @@ def await_admission():
     require(set(policy["host_namespaces"]) == set(NAMESPACES), "namespace policy")
     require(all(namespaces[name] != policy["host_namespaces"][name] for name in NAMESPACES), "private namespaces")
     limits = {name: (Path("/sys/fs/cgroup") / name).read_text().strip() for name in policy["limits"]}
-    require(limits == {"memory.max": "805306368", "memory.swap.max": "0", "cpu.max": "25000 100000", "pids.max": "48"}, "aggregate limits")
+    require(limits == {"memory.max": "805306368", "memory.swap.max": "0", "memory.oom.group": "1", "cpu.max": "25000 100000", "pids.max": "48"}, "aggregate limits")
     require(limits == policy["limits"], "limit policy mismatch")
     for path in ("/source", "/policy", "/deps", "/sys/fs/cgroup", "/usr", "/etc/passwd", "/etc/group"):
         require("ro" in mount_options(path), "read-only mount: " + path)
