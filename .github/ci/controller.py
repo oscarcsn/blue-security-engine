@@ -32,6 +32,52 @@ def require(condition, message):
         raise RuntimeError(message)
 
 
+def namespace_preparation():
+    path = Path("/run/bse-ci-apparmor.json")
+    info = path.lstat()
+    require(stat.S_ISREG(info.st_mode) and info.st_uid == 0 and info.st_nlink == 1
+            and not info.st_mode & 0o022 and info.st_size <= 4096, "Trusted namespace metadata ownership/type")
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(fd, "rb") as stream:
+        metadata = json.loads(stream.read(4097))
+    require(type(metadata) is dict and set(metadata) == {"userns_restrict", "apparmor_enabled", "profile",
+            "profile_source_sha256", "profile_created", "profile_loaded"}, "Namespace metadata shape")
+    flag_path = Path("/proc/sys/kernel/apparmor_restrict_unprivileged_userns")
+    flag = flag_path.read_text().strip() if flag_path.exists() else "0"
+    require(flag in ("0", "1") and metadata["userns_restrict"] == flag, "Namespace restriction changed")
+    if flag == "1":
+        require(metadata["apparmor_enabled"] is True and metadata["profile_loaded"] is True
+                and metadata["profile"] in ("bwrap", "bse-ci-bwrap"), "Targeted namespace profile missing")
+        profiles = Path("/sys/kernel/security/apparmor/profiles").read_text().splitlines()
+        require(any(line in (metadata["profile"] + " (enforce)", metadata["profile"] + " (unconfined)")
+                    for line in profiles), "Prepared namespace profile not loaded")
+    else:
+        require(metadata["profile"] is None, "Unexpected namespace profile without restriction")
+    return metadata
+
+
+def bwrap_denials():
+    """Only classification fields from recent bwrap AppArmor denials; no raw logs."""
+    try:
+        result = subprocess.run(["/usr/bin/journalctl", "--dmesg", "--no-pager", "--lines=80", "--output=json"],
+                                stdin=subprocess.DEVNULL, capture_output=True, timeout=5, check=False)
+        require(result.returncode == 0 and len(result.stdout) <= 262144, "Kernel diagnostic unavailable")
+        denials = []
+        for line in result.stdout.splitlines():
+            item = json.loads(line)
+            message = item.get("MESSAGE", "")
+            if type(message) is str and 'apparmor="DENIED"' in message and 'comm="bwrap"' in message:
+                fields = {}
+                for name in ("operation", "class", "capname"):
+                    match = re.search(name + r'="([A-Za-z0-9_-]{1,64})"', message)
+                    if match:
+                        fields[name] = match.group(1)
+                denials.append(fields)
+        return {"available": True, "bwrap_denials": denials}
+    except Exception:
+        return {"available": False, "bwrap_denials": []}
+
+
 def unit_state(unit):
     result = subprocess.run(
         ["/usr/bin/systemctl", "show", unit,
@@ -166,6 +212,8 @@ def main():
     result_record = None
     try:
         require(unit_state(unit)["LoadState"] == "not-found", "Own unit name must be unused")
+        namespace_metadata = namespace_preparation()
+        record["namespace_preparation"] = namespace_metadata
         stage.mkdir(mode=0o755)
         stage_identity = (stage.stat().st_dev, stage.stat().st_ino)
         workspace = Path(args.workspace).resolve(strict=True)
@@ -178,7 +226,7 @@ def main():
         require((stage / "policy/worker.py").is_file() and (stage / "policy/admission.py").is_file(), "Fixed policy worker missing")
         (stage / "scratch").mkdir(mode=0o755)
         policy = {"nonce": nonce, "uid": uid, "host_namespaces": {name: os.readlink("/proc/self/ns/" + name) for name in NAMESPACES},
-                  "limits": LIMITS, "scratch": {"bytes": 67108864, "inodes": 2048}}
+                  "limits": LIMITS, "scratch": {"bytes": 67108864, "inodes": 2048}, "apparmor_profile": namespace_metadata["profile"]}
         (stage / "policy").chmod(0o755)
         (stage / "policy/profile.json").write_text(json.dumps(policy) + "\n")
         (stage / "policy/profile.json").chmod(0o444)
@@ -234,6 +282,7 @@ def main():
                         if event.get("event") == "ready":
                             require(not record["gate_released"] and event.get("nonce") == nonce and type(event.get("uid")) is int and event["uid"] == uid, "Worker ready identity mismatch")
                             require(event.get("limits") == LIMITS, "Worker ready limit mismatch")
+                            require(event.get("apparmor_profile") == policy["apparmor_profile"], "Worker AppArmor attachment mismatch")
                             require(type(event.get("namespaces")) is dict and set(event["namespaces"]) == set(NAMESPACES)
                                     and all(event["namespaces"][name] != policy["host_namespaces"][name] for name in NAMESPACES), "Worker ready namespace mismatch")
                             state = unit_state(unit)
@@ -269,6 +318,8 @@ def main():
     finally:
         record["output_bytes"] = len(output)
         record["output_sha256"] = hashlib.sha256(output).hexdigest()
+        if record["status"] != "PASS":
+            record["kernel_diagnostics"] = bwrap_denials()
         cleanup_errors = []
         try:
             state = unit_state(unit)

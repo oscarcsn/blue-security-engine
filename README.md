@@ -1,5 +1,7 @@
 # Blue Security Engine
 
+[![CI](https://github.com/oscarcsn/blue-security-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/oscarcsn/blue-security-engine/actions/workflows/ci.yml)
+
 Blue Security Engine (BSE) is a Python standard-library package for validating
 parent-linked session graphs, encoding composite keys, and checking artifact
 integrity with HMAC authentication. It also generates Bubblewrap arguments and

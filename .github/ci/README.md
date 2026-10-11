@@ -20,6 +20,9 @@ sockets are absent. The entire worker process tree shares one cgroup with
 `OOMPolicy=kill` requests group termination on OOM. The kernel value
 `memory.oom.group=1` must be observed both inside and outside Bubblewrap
 before the gate opens; requesting a systemd setting alone is insufficient.
+Bubblewrap sets `PWD=/source` after clearing the environment. Admission
+therefore requires exactly six known variables; mismatch diagnostics list
+only key names, never their values.
 Private scratch is a 64 MiB tmpfs with 2,048 inodes. The external controller
 also bounds output and time, checks the own-unit identity before admission,
 and cleans only that unit and its unique staging directory.
@@ -32,3 +35,15 @@ imports when a required control is unavailable; there is no host-execution
 fallback. Do not run it on the productive `hp` workstation. CI does not certify
 production deployment, enforce an application's tenant authorization, or
 prove compatibility with Python versions absent from successful job results.
+
+On runners with Ubuntu's AppArmor user-namespace restriction enabled, trusted
+CI preparation loads the installed `bwrap` profile. If none exists, it creates
+the documented exception for `/usr/bin/bwrap`, named `bse-ci-bwrap`, with
+`flags=(unconfined)` and `userns,`. It changes no sysctl and no unrelated profile.
+The normal executable attachment must be observed in the worker's kernel label
+before GO; no optional systemd profile property or execution fallback is used.
+This exception permits namespace setup, rather than adding another confinement
+layer. Zero capabilities, private network, read-only mounts and cgroup limits
+remain independently required. Failed preflights report only classification
+fields from recent bwrap AppArmor denials, if the kernel journal is available.
+The profile is provisioned only on the disposable CI VM.

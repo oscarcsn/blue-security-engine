@@ -32,10 +32,20 @@ def await_admission():
     policy_path = Path("/policy/profile.json")
     require("ro" in mount_options("/policy"), "policy must be read-only")
     policy = json.loads(policy_path.read_text())
-    require(set(policy) == {"nonce", "uid", "host_namespaces", "limits", "scratch"}, "policy shape")
+    require(set(policy) == {"nonce", "uid", "host_namespaces", "limits", "scratch", "apparmor_profile"}, "policy shape")
     require(type(policy["uid"]) is int and os.getuid() == os.geteuid() == policy["uid"] != 0, "worker identity")
     require(type(policy["nonce"]) is str and len(policy["nonce"]) == 32, "nonce")
-    require(dict(os.environ) == {"HOME": "/tmp/home", "TMPDIR": "/tmp", "PATH": "/usr/bin", "LANG": "C.UTF-8", "PYTHONDONTWRITEBYTECODE": "1"}, "clean worker environment")
+    expected_env = {"HOME": "/tmp/home", "TMPDIR": "/tmp", "PATH": "/usr/bin", "LANG": "C.UTF-8", "PYTHONDONTWRITEBYTECODE": "1", "PWD": "/source"}
+    if dict(os.environ) != expected_env:
+        print(json.dumps({"ci_environment_mismatch": {"extra_keys": sorted(set(os.environ) - set(expected_env)),
+              "missing_keys": sorted(set(expected_env) - set(os.environ)),
+              "different_value_keys": sorted(name for name in set(expected_env) & set(os.environ) if os.environ[name] != expected_env[name])}}), flush=True)
+        raise RuntimeError("CI admission denied: clean worker environment")
+    expected_profile = policy["apparmor_profile"]
+    require(expected_profile in (None, "bwrap", "bse-ci-bwrap"), "AppArmor profile policy")
+    if expected_profile is not None:
+        actual_profile = Path("/proc/self/attr/current").read_text().strip()
+        require(actual_profile in (expected_profile + " (enforce)", expected_profile + " (unconfined)"), "Expected bwrap AppArmor attachment")
     status = dict(line.split(":", 1) for line in Path("/proc/self/status").read_text().splitlines() if ":" in line)
     require(all(int(status[name].strip(), 16) == 0 for name in CAPS), "capabilities")
     require(status["NoNewPrivs"].strip() == "1", "NoNewPrivileges")
@@ -66,7 +76,7 @@ def await_admission():
         else:
             sock.close()
             raise RuntimeError("CI admission denied: INET family available")
-    print(json.dumps({"event": "ready", "nonce": policy["nonce"], "uid": os.getuid(), "limits": limits, "namespaces": namespaces}), flush=True)
+    print(json.dumps({"event": "ready", "nonce": policy["nonce"], "uid": os.getuid(), "limits": limits, "namespaces": namespaces, "apparmor_profile": expected_profile}), flush=True)
     line = sys.stdin.readline(128)
     require(line == "GO " + policy["nonce"] + "\n", "supervisor gate")
     sys.stdin.close()
