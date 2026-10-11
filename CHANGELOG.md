@@ -1,0 +1,32 @@
+# Changelog
+
+Changes describe local development snapshots. A dated entry is not a published
+release or an independently verified deployment.
+
+## Unreleased
+
+- Rewrite the README around the implemented helpers, caller responsibilities
+  and local installation and validation paths.
+- Document manifest authentication, filesystem assumptions and the distinction
+  between cgroup observations and external enforcement.
+- Add contributing guidance and a reviewable security policy.
+- Remove unverified response SLAs, CVE-assignment commitments and an assumed
+  public vulnerability-reporting channel.
+- Reference forthcoming publication-validation records without claiming a new
+  test run, public release or CI result.
+
+## 0.1.0 — local development snapshot, 2026-10-10
+
+Historical receipt revision: `8b2a751b50ccac5fbc46b55e062a31315b42771d`.
+
+- Iterative parent-linked graph validation and canonical composite-key encoding.
+- Deep-copying in-memory session records with validation before mutation.
+- HMAC-authenticated manifest verification required by default, explicit
+  checksum-only mode, bounded regular-file hashing and atomic JSON export.
+- Ordered Bubblewrap argument generation and visible cgroups v2 inspection.
+- Packaged demo and Python typing marker.
+
+The historical local receipt records 99 package test methods, 26 separate
+integration methods, 66 separate supervisor methods and ten fixed arena cases.
+See [README.md](README.md#validation-evidence) for scope and receipt identity;
+see [VALIDATION.md](VALIDATION.md) for the current verification record.

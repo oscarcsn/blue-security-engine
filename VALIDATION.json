@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "project": "blue-security-engine",
+  "package_version": "0.1.0",
+  "stage": "prepublication",
+  "prepared_at_utc": "2026-10-11T03:54:56.888325+00:00",
+  "historical_validation": {
+    "source_revision": "8b2a751b50ccac5fbc46b55e062a31315b42771d",
+    "receipt_sha256": "57fcedd80f686d16332b918fa09159407f824782b2bfa800b704258961be17f4",
+    "package_test_methods": 99,
+    "separate_lab_integration_methods": 26,
+    "separate_lab_supervisor_methods": 66,
+    "fixed_arena_cases": 10,
+    "offline_build_recorded": "PASS",
+    "scope": "Historical local supported profiles; not an execution of the current publication candidate."
+  },
+  "publication_candidate": {
+    "status": "PASS_LOCAL_CHECKS",
+    "source_changes": [
+      "Structured rejection when canonical HMAC serialization raises RecursionError",
+      "Precise demo and metadata language",
+      "Documentation and security-policy corrections"
+    ],
+    "current_test_method_inventory": 99,
+    "new_remote_ci_executed": false,
+    "verification_timestamp_utc": "2026-10-11T03:48:50.116037+00:00",
+    "profile": "Closed local unit-suite and offline-build profile",
+    "package_tests_observed": 99,
+    "package_suite_exit_code": 0,
+    "offline_packaging": {
+      "artifacts_retained": false,
+      "backend_dependency_sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
+      "installed_demos": {
+        "console": {
+          "demo": "PASS",
+          "exit_code": 0,
+          "hmac": "OK"
+        },
+        "module": {
+          "demo": "PASS",
+          "exit_code": 0,
+          "hmac": "OK"
+        }
+      },
+      "installed_probe": {
+        "demo_resource": "OK",
+        "installed_identity": "OK",
+        "typing_resource": "OK"
+      },
+      "sdist": {
+        "filename": "blue-security-engine-0.1.0.tar.gz",
+        "required_contents_present": true,
+        "sha256": "377e977d79fa74ba1c3556fa35db2d75e401cdb94d0d4ae4888416c00c07b8b0"
+      },
+      "sdist_to_wheel": true,
+      "status": "PASS",
+      "transfer_checks": {
+        "sdist_extraction_sha256_matches": true,
+        "source_copy_sha256_matches": true,
+        "wheel_installation_sha256_matches": true
+      },
+      "wheel": {
+        "filename": "blue_security_engine-0.1.0-py3-none-any.whl",
+        "metadata_name": "blue-security-engine",
+        "metadata_version": "0.1.0",
+        "required_contents_present": true,
+        "runtime_dependencies": [],
+        "sha256": "199113d6a2e195b3a1dc3527de8bd43f7b8c9515afcf3936e3255c3aec40e293"
+      }
+    },
+    "verified_code_and_build_inputs_sha256": {
+      "MANIFEST.in": "6397c57059df7b836156831198c587979d82b76fbd62e3a8a7e583bb2fe0c35f",
+      "demo.py": "e5f0b6dbd7a3740c06a28120616635697968952c3eea42bdcf7e4b290ce92a01",
+      "pyproject.toml": "2692a294de75003f6c13f9e127774dfa0aee2c9d11ab7fffeae1bb122b69afc7",
+      "src/bse/__init__.py": "7997bff55aeb4c107503d3848b8db68591a1a0e891ac1e9735dc19ee850536fc",
+      "src/bse/defense/__init__.py": "ad6148d5851c2fa4c6443ed266947d29213ef56376fcd017ad0edd4365dfc20e",
+      "src/bse/defense/cycle_detector.py": "797a61786b20b17552e2e1be9bc92f029c824ff2e2f0436822f9daff70debb96",
+      "src/bse/defense/safe_store.py": "ae617c48ded44e141f1573d083a641ee556dda456019dc3f4939f68c967097fb",
+      "src/bse/demo.py": "bbd8ae9782b8eca3902ca38fdedf13e680d3eb841082f7809a9fc02300dfc028",
+      "src/bse/forensics/__init__.py": "821265035588657aecb9f84364d2c31086e5cfa92753467366d8d7ac03adc11d",
+      "src/bse/forensics/manifest.py": "b7afdd3c48f02f330d75199dae7b0a8ab168d03c14f48748636201d6579e31e3",
+      "src/bse/isolation/__init__.py": "2ea63ba56c7d06377d01cc529141628b1450da2f01bf633c27f68f22cb2f1635",
+      "src/bse/isolation/bubblewrap.py": "b667f808df2d7f0ff8a2775bd484aae634a6cc56a26dac9aad605695a8f594ae",
+      "src/bse/isolation/cgroups.py": "b709cba0242ec939f9da099528a3e6529e9392b4bfc2b51fecf85851f9b12607",
+      "src/bse/py.typed": "f0f8f2675695a10a5156fb7bd66bafbaae6a13e8d315990af862c792175e6e67",
+      "tests/test_cycle_detector.py": "6856f02dd3883e25a0ccc17f93efcb0eabdea83c4548f47f754c4b1f302984c4",
+      "tests/test_demo.py": "ad431c54e974254459eac2ec7f93882cbaf2f81ed22ac40cb17a397299be927d",
+      "tests/test_isolation.py": "b1007bf1cf6a96852478a409b3b1648aca5b15a7ba7dd8dd31d12e3f8c82fe24",
+      "tests/test_manifest.py": "186557776b38a14bfe68a9e313e05386e0a716796da971887f8b9dfc17080c46",
+      "tests/test_packaging.py": "05e1887f57b092e84968427e97a60a498a51de733305d159debe0e72ba2b4b59",
+      "tests/test_safe_store.py": "4586db3a7499c0e75b3a9ab686fd4d806e71c6a747b8eb09ce5735e89ed99a2e"
+    },
+    "source_identification": "Working-tree code and build inputs are identified above; this validation record was generated after that run.",
+    "environment": {
+      "operating_system": "Linux",
+      "private_namespaces": true,
+      "network": "private and no external connectivity",
+      "aggregate_memory_bytes": 268435456,
+      "aggregate_swap_bytes": 0,
+      "aggregate_cpu_quota": "25000/100000",
+      "aggregate_pids_max": 16,
+      "bounded_time_and_output": true
+    },
+    "cleanup": {
+      "workers_and_controller_vacated": true,
+      "aggregate_cgroup_removed": true,
+      "staging_removed": true
+    },
+    "production_observation": "Before/after service state and PID samples matched; continuous availability was not measured.",
+    "private_receipt_integrity": {
+      "run_sha256": "6bbb8b31675e71226de1355fcd66de88c159b912acb68fc7a0fd1d34487429f8",
+      "outer_sha256": "b4fc4ffc04b878e6b9acf9c90d7c592bbe0301c00b55eefd8e2a7e061897ac75",
+      "finalization_sha256": "b5ff23d9261e6194c18d01b534070cce62f6d242a91c00abc345ef7c0d883db1",
+      "availability": "Private local records; hashes alone are not publicly reproducible evidence or independent authentication."
+    },
+    "regression_scope": "Actual deep/circular payloads reject authentication; controlled encoder RecursionError returns INVALID_SIGNATURE without artifact reads. The encoder depth threshold varies with runtime.",
+    "initial_run": "A first run found an overly narrow status assertion in the new regression. The assertion was corrected, and this recorded run passed.",
+    "other_lab_suites_executed_in_this_run": false
+  },
+  "review": {
+    "type": "Independent agent static review plus maintainer integration",
+    "snapshot_files_reviewed": 24,
+    "baseline_report_sha256": "34b5700c26e12da720c7a9f56472eb551967441aa4f2ba5091fd1b88b075648e",
+    "managed_codex_security_scan_performed": false,
+    "third_party_certification": false
+  },
+  "limits": [
+    "Verification applies only to identified inputs and configurations",
+    "Library configuration and inspection do not enforce confinement",
+    "The laboratory supervisor is outside the distributed library",
+    "No employer deployment, accepted disclosure or provider admission established"
+  ]
+}

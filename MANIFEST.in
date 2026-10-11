@@ -1,0 +1,6 @@
+include README.md SECURITY.md VALIDATION.md VALIDATION.json LICENSE pyproject.toml demo.py CONTRIBUTING.md CHANGELOG.md
+recursive-include docs *.md
+recursive-include src/bse *.py py.typed
+recursive-include tests *.py
+global-exclude *.py[cod]
+prune **/__pycache__
