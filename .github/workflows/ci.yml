@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Linux / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            python: '3.10'
+          - runner: ubuntu-24.04
+            python: '3.12'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4, verified 2026-10-10
+        with:
+          persist-credentials: false
+      - name: Prepare trusted tools on the ephemeral runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y bubblewrap
+          /usr/bin/python3 -I -B .github/ci/bootstrap.py --output "$RUNNER_TEMP/bse-ci-deps"
+      - name: Run the fixed offline validation profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo -- /usr/bin/python3 -I -B .github/ci/controller.py \
+            --workspace "$GITHUB_WORKSPACE" \
+            --dependencies "$RUNNER_TEMP/bse-ci-deps" \
+            --python-minor '${{ matrix.python }}'
