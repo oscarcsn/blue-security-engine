@@ -75,6 +75,24 @@ def run_demo() -> bool:
         print(f"  [+] Integrity & Telemetry Manifest with HMAC Authentication: {status} "
               f"(Integrity={integrity['valid']}, HMAC={integrity['hmac']['status']})")
 
+        # Change the synthetic artifact without changing its recorded size.
+        sample.write_text('{"event": "modified__demo"}', encoding="utf-8")
+        tampered = EvidenceManifest.verify_manifest(
+            manifest_data, hmac_key=key, require_signature=True,
+        )
+        artifact_result = tampered["artifacts"].get("audit_receipt", {})
+        tamper_detected = (
+            tampered["valid"] is False
+            and tampered["hmac"]["valid"] is True
+            and artifact_result.get("valid") is False
+            and artifact_result.get("status") == "HASH_MISMATCH"
+        )
+        status = "PASS" if tamper_detected else "FAIL"
+        print(f"  [+] Same authenticated manifest after artifact change: {status} "
+              f"(Integrity={tampered['valid']}, HMAC={tampered['hmac']['valid']}, "
+              f"artifact={artifact_result.get('status')})")
+        print("  A manifest can remain authenticated while its referenced artifact has changed.")
+
     # 4. Bubblewrap Sandbox Argument Generation
     print("\n[4] BUBBLEWRAP CONFIGURATION:")
     builder = BubblewrapBuilder()
@@ -86,7 +104,10 @@ def run_demo() -> bool:
     print(f"  [+] Required configuration flags generated: {flags_present}")
     print("  Configuration only; no sandbox was launched.")
 
-    success = bool(cycles and cycle_blocked and keys_separated and manifest_valid and flags_present)
+    success = bool(
+        cycles and cycle_blocked and keys_separated and manifest_valid
+        and tamper_detected and flags_present
+    )
     print("\n" + "=" * 72)
     print("  DEMO CHECKS PASSED" if success else "  DEMO CHECKS FAILED")
     print("=" * 72)
