@@ -89,6 +89,10 @@ intercepting an application's later traversals.
 For authenticated artifact verification, use a caller-held HMAC key and check
 the complete report. [The manifest example](docs/DESIGN.md#artifact-manifests)
 explains the distinction between payload authentication and artifact validity.
+The demo also changes a synthetic artifact after signing its manifest: HMAC can
+remain valid while artifact verification reports a hash mismatch. HMAC does not
+identify the producer, and filesystem review describes the artifact at that
+instant only; verify files from a trusted directory.
 
 ## Validation evidence
 
