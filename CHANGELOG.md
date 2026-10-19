@@ -3,17 +3,19 @@
 Changes describe local development snapshots. A dated entry is not a published
 release or an independently verified deployment.
 
-## Unreleased
+## 0.1.0 — public repository and Linux CI verification, 2026-10-11 / 2026-10-12
 
 - Rewrite the README around the implemented helpers, caller responsibilities
   and local installation and validation paths.
+- Demonstrate post-signature artifact mutation detection (`HASH_MISMATCH` with
+  a valid HMAC signature) in `bse.demo` and `bse-demo`.
+- Add the `.github/ci` Linux Bubblewrap + `cgroup v2` admission and offline
+  packaging verification harness tested on Ubuntu 22.04 (Python 3.10.12) and
+  Ubuntu 24.04 (Python 3.12.3).
 - Document manifest authentication, filesystem assumptions and the distinction
   between cgroup observations and external enforcement.
-- Add contributing guidance and a reviewable security policy.
-- Remove unverified response SLAs, CVE-assignment commitments and an assumed
-  public vulnerability-reporting channel.
-- Reference forthcoming publication-validation records without claiming a new
-  test run, public release or CI result.
+- Add contributing guidance, a reviewable security policy and synchronized
+  validation records in `VALIDATION.md` and `VALIDATION.json`.
 
 ## 0.1.0 — local development snapshot, 2026-10-10
 

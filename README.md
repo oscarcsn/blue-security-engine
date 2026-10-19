@@ -118,7 +118,7 @@ local verification profile. [VALIDATION.md](VALIDATION.md) and
 [VALIDATION.json](VALIDATION.json) identify the tested code hashes, environment,
 scope and limits.
 
-[GitHub CI](https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597) for commit `3f41a1f815c69d44305a03279d6026f1b505aca6` passed
+[GitHub CI](https://github.com/oscarcsn/blue-security-engine/actions/runs/38210940165) for commit `ad95f6581b8da5e5822535dc868aeb073f856c09` (following initial public [run 38113465597](https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597) on `3f41a1f815c69d44305a03279d6026f1b505aca6` and [run 38113719103](https://github.com/oscarcsn/blue-security-engine/actions/runs/38113719103) on `7449956a271c5929245a43a57eddb86006d5bf33`) passed
 99 tests without skips on Ubuntu 22.04 / Python 3.10.12 and Ubuntu 24.04 /
 Python 3.12.3. Each job built an sdist, built a wheel from that sdist, installed
 offline, checked `py.typed`, and passed both installed demo entry points.

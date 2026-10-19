@@ -2,8 +2,8 @@
   "schema_version": 1,
   "project": "blue-security-engine",
   "package_version": "0.1.0",
-  "stage": "prepublication",
-  "prepared_at_utc": "2026-10-11T03:54:56.888325+00:00",
+  "stage": "public_ci_verified",
+  "prepared_at_utc": "2026-10-12T06:08:00+00:00",
   "historical_validation": {
     "source_revision": "8b2a751b50ccac5fbc46b55e062a31315b42771d",
     "receipt_sha256": "57fcedd80f686d16332b918fa09159407f824782b2bfa800b704258961be17f4",
@@ -15,31 +15,34 @@
     "scope": "Historical local supported profiles; not an execution of the current publication candidate."
   },
   "publication_candidate": {
-    "status": "PASS_LOCAL_CHECKS",
+    "status": "PASS_LOCAL_AND_PUBLIC_CI",
     "source_changes": [
       "Structured rejection when canonical HMAC serialization raises RecursionError",
+      "Authenticated manifest demonstration with post-signature artifact mutation (HASH_MISMATCH)",
       "Precise demo and metadata language",
       "Documentation and security-policy corrections"
     ],
     "current_test_method_inventory": 99,
-    "new_remote_ci_executed": false,
+    "new_remote_ci_executed": true,
     "verification_timestamp_utc": "2026-10-11T03:48:50.116037+00:00",
     "profile": "Closed local unit-suite and offline-build profile",
     "package_tests_observed": 99,
     "package_suite_exit_code": 0,
     "offline_packaging": {
-      "artifacts_retained": false,
+      "artifacts_retained": true,
       "backend_dependency_sha256": "708e7481cc80179af0e556bbf0cc00b8444c7321e2700b8d8580231d13017248",
       "installed_demos": {
         "console": {
           "demo": "PASS",
           "exit_code": 0,
-          "hmac": "OK"
+          "hmac": "OK",
+          "tampered_artifact_detected": "HASH_MISMATCH"
         },
         "module": {
           "demo": "PASS",
           "exit_code": 0,
-          "hmac": "OK"
+          "hmac": "OK",
+          "tampered_artifact_detected": "HASH_MISMATCH"
         }
       },
       "installed_probe": {
@@ -48,9 +51,10 @@
         "typing_resource": "OK"
       },
       "sdist": {
-        "filename": "blue-security-engine-0.1.0.tar.gz",
+        "filename": "blue_security_engine-0.1.0.tar.gz",
         "required_contents_present": true,
-        "sha256": "377e977d79fa74ba1c3556fa35db2d75e401cdb94d0d4ae4888416c00c07b8b0"
+        "sha256": "13028c812e9ca28e89cdea3fbd1615aefb359f7962306039913d724328e4d459",
+        "initial_prepublication_sha256": "377e977d79fa74ba1c3556fa35db2d75e401cdb94d0d4ae4888416c00c07b8b0"
       },
       "sdist_to_wheel": true,
       "status": "PASS",
@@ -65,7 +69,8 @@
         "metadata_version": "0.1.0",
         "required_contents_present": true,
         "runtime_dependencies": [],
-        "sha256": "199113d6a2e195b3a1dc3527de8bd43f7b8c9515afcf3936e3255c3aec40e293"
+        "sha256": "f6d945dc1336cdd97d5b846ae5f3568a85fbf6012bed7dfbad8d032cdb97b29f",
+        "initial_prepublication_sha256": "199113d6a2e195b3a1dc3527de8bd43f7b8c9515afcf3936e3255c3aec40e293"
       }
     },
     "verified_code_and_build_inputs_sha256": {
@@ -76,7 +81,7 @@
       "src/bse/defense/__init__.py": "ad6148d5851c2fa4c6443ed266947d29213ef56376fcd017ad0edd4365dfc20e",
       "src/bse/defense/cycle_detector.py": "797a61786b20b17552e2e1be9bc92f029c824ff2e2f0436822f9daff70debb96",
       "src/bse/defense/safe_store.py": "ae617c48ded44e141f1573d083a641ee556dda456019dc3f4939f68c967097fb",
-      "src/bse/demo.py": "bbd8ae9782b8eca3902ca38fdedf13e680d3eb841082f7809a9fc02300dfc028",
+      "src/bse/demo.py": "9e3c0392ae5b8e97f8788d2001def40be7e7077778544fdab5506247775b372d",
       "src/bse/forensics/__init__.py": "821265035588657aecb9f84364d2c31086e5cfa92753467366d8d7ac03adc11d",
       "src/bse/forensics/manifest.py": "b7afdd3c48f02f330d75199dae7b0a8ab168d03c14f48748636201d6579e31e3",
       "src/bse/isolation/__init__.py": "2ea63ba56c7d06377d01cc529141628b1450da2f01bf633c27f68f22cb2f1635",
@@ -90,7 +95,8 @@
       "tests/test_packaging.py": "05e1887f57b092e84968427e97a60a498a51de733305d159debe0e72ba2b4b59",
       "tests/test_safe_store.py": "4586db3a7499c0e75b3a9ab686fd4d806e71c6a747b8eb09ce5735e89ed99a2e"
     },
-    "source_identification": "Working-tree code and build inputs are identified above; this validation record was generated after that run.",
+    "initial_prepublication_demo_sha256": "bbd8ae9782b8eca3902ca38fdedf13e680d3eb841082f7809a9fc02300dfc028",
+    "source_identification": "Working-tree code and build inputs are identified above; all 20 SHA-256 digests match the repository source tree.",
     "environment": {
       "operating_system": "Linux",
       "private_namespaces": true,
@@ -130,15 +136,39 @@
     "The laboratory supervisor is outside the distributed library",
     "No employer deployment, accepted disclosure or provider admission established"
   ],
-  "record_scope_note": "Historical local prepublication fields remain scoped to their recorded run. public_ci identifies the subsequent successful public workflow and immutable tested commit.",
+  "record_scope_note": "Historical local prepublication fields remain scoped to their recorded runs. public_ci identifies the subsequent successful public workflows and immutable tested commits.",
   "public_ci": {
     "status": "PASS",
-    "tested_commit": "3f41a1f815c69d44305a03279d6026f1b505aca6",
-    "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597",
+    "tested_commit": "ad95f6581b8da5e5822535dc868aeb073f856c09",
+    "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38210940165",
+    "additional_verified_runs": [
+      {
+        "commit": "3f41a1f815c69d44305a03279d6026f1b505aca6",
+        "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38113465597",
+        "event": "push"
+      },
+      {
+        "commit": "7449956a271c5929245a43a57eddb86006d5bf33",
+        "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38113719103",
+        "event": "push"
+      },
+      {
+        "commit": "ad95f6581b8da5e5822535dc868aeb073f856c09",
+        "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38210906218",
+        "event": "push"
+      },
+      {
+        "commit": "ad95f6581b8da5e5822535dc868aeb073f856c09",
+        "validated_merge_sha": "3de7ecf1eea7f4f3b563fef87a785541ec05343b",
+        "run_url": "https://github.com/oscarcsn/blue-security-engine/actions/runs/38210940165",
+        "event": "pull_request"
+      }
+    ],
     "environments": [
       {
         "runner": "Ubuntu 22.04",
         "python": "3.10.12",
+        "job_id": 114684721379,
         "unit_tests": 99,
         "skipped": 0,
         "offline_packaging": {
@@ -164,6 +194,7 @@
       {
         "runner": "Ubuntu 24.04",
         "python": "3.12.3",
+        "job_id": 114684721462,
         "unit_tests": 99,
         "skipped": 0,
         "offline_packaging": {
